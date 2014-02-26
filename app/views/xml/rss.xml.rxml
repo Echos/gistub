@@ -1,0 +1,25 @@
+xml.instruct! :xml, :version => "1.0", :encoding => "UTF-8"
+xml.rss("version"    => '2.0',
+        "xmlns:dc"   => "http://purl.org/dc/elements/1.1/",
+        "xmlns:atom" => "http://www.w3.org/2005/Atom") do
+  xml.channel do
+    xml.title @feed_title
+    xml.link(request.protocol + request.host_with_port + url_for(:rss => nil))
+    xml.language "ja-ja"
+    xml.ttl "40"
+    xml.pubDate(Time.now.strftime("%a, %d %b %Y %H:%M:%S %Z"))
+ 
+    @blogs.each do |blog|
+      xml.item do
+        xml.title(blog.title)
+        xml.link(request.protocol + request.host_with_port +
+                 url_for(:controller => 'blog', :action => 'entry', :id => blog.id ))
+        xml.description(blog.body)
+        xml.guid(request.protocol + request.host_with_port +
+                 url_for(:controller => 'blog', :action => 'entry', :id => blog.id ))
+        xml.pubDate(blog.created_at)
+        xml.author "RssAuthor"
+      end
+    end
+  end
+end
