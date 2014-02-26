@@ -1,6 +1,7 @@
 # -*- encoding : utf-8 -*-
 Gistub::Application.routes.draw do
 
+  get "xml/rss"
   root :to => 'root#index'
 
   resources :gists do
